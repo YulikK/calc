@@ -1,0 +1,17 @@
+@use '@/shared/styles/mixins' as *;
+
+.container {
+  width: 100%;
+  max-width: 500px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.result,
+.display {
+  margin: 0px;
+  @include font-style;
+}
