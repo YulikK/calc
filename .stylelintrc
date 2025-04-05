@@ -1,0 +1,44 @@
+{
+  "extends": ["stylelint-config-standard-scss", "stylelint-config-clean-order"],
+  "plugins": ["stylelint-order"],
+  "rules": {
+    "scss/dollar-variable-empty-line-before": [
+      "always",
+      {
+        "except": ["after-dollar-variable", "first-nested"],
+        "ignore": ["after-comment", "inside-single-line-block"]
+      }
+    ],
+    "order/order": [
+      "custom-properties",
+      "dollar-variables",
+      {
+        "type": "at-rule",
+        "name": "extend"
+      },
+      {
+        "type": "at-rule",
+        "name": "extend",
+        "hasBlock": true
+      },
+      "declarations",
+      "rules",
+      {
+        "type": "at-rule",
+        "name": "include"
+      },
+      {
+        "type": "at-rule",
+        "name": "include",
+        "hasBlock": true
+      },
+      {
+        "type": "at-rule"
+      },
+      {
+        "type": "at-rule",
+        "hasBlock": true
+      }
+    ]
+  }
+}

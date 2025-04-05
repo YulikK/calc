@@ -1,5 +1,6 @@
 import js from '@eslint/js';
 import prettier from 'eslint-config-prettier';
+import importPlugin from 'eslint-plugin-import';
 import globals from 'globals';
 
 export default [
@@ -17,10 +18,52 @@ export default [
     },
     plugins: {
       prettier: prettier,
+      import: importPlugin,
+    },
+    settings: {
+      'import/resolver': {
+        alias: {
+          map: [['@', './src']],
+          extensions: ['.js', '.jsx', '.scss'],
+        },
+      },
     },
     rules: {
       'no-undef': 'error',
       'no-unused-vars': 'error',
+      'import/order': [
+        'error',
+        {
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true,
+          },
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            'parent',
+            'sibling',
+            'index',
+            'object',
+            'type',
+          ],
+          pathGroups: [
+            {
+              pattern: '@/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '*.{css,scss,sass,less}',
+              group: 'type',
+              position: 'after',
+            },
+          ],
+          'newlines-between': 'always',
+          warnOnUnassignedImports: true,
+        },
+      ],
     },
   },
 ];
