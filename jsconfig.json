@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "checkJs": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "bundler",
+    "target": "ES2020",
+    "module": "ESNext"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.scss"]
+}
