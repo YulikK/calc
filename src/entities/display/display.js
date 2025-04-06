@@ -3,17 +3,21 @@ import { Component } from '@/shared/ui/component/component';
 import style from './display.module.scss';
 
 export class Display extends Component {
-  #value = '';
-
   constructor() {
     super({ tag: 'div', className: style.container });
-    this.result = new Component({ tag: 'p', className: style.result, text: '10' });
-    this.display = new Component({ tag: 'p', className: style.display, text: '5+5' });
+    this.#renderView();
+  }
+
+  #renderView() {
+    this.result = new Component({ tag: 'p', className: style.result, text: '' });
+    this.display = new Component({ tag: 'p', className: style.display, text: '' });
     this.appendChildren([this.result, this.display]);
   }
 
   onDisplayChange(value) {
-    this.#value += value;
-    this.display.setTextContent(this.#value);
+    console.log('onDisplayChange', value);
+    this.display.setTextContent(value);
+    const element = this.display.getNode();
+    element.scrollLeft = element.scrollWidth;
   }
 }

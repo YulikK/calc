@@ -2,19 +2,18 @@ import { OPERATIONS } from '@/shared/constant';
 import { ButtonOperation } from '@/shared/ui/button-operation/button-operation';
 import { Component } from '@/shared/ui/component/component';
 
-import styles from './options-panel.module.scss';
+import style from './clear-panel.module.scss';
 
-const options = [OPERATIONS.plus, OPERATIONS.minus, OPERATIONS.multiply, OPERATIONS.divide];
+const options = [OPERATIONS.clear, OPERATIONS.delete];
 
-export class OptionsPanel extends Component {
+export default class ClearPanel extends Component {
   #onClick;
 
   constructor({ onOperationClick }) {
-    super({ tag: 'div', className: styles.container });
+    super({ tag: 'div', className: style.container });
     this.#onClick = onOperationClick;
     this.#renderView();
   }
-
   #renderView() {
     options.forEach((item) => {
       const button = new ButtonOperation({

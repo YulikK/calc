@@ -1,30 +1,44 @@
+export const OPERATORS = {
+  PLUS: '+',
+  MINUS: '-',
+  MULTIPLY: '*',
+  DIVIDE: '/',
+  EQUALS: 'RESULT',
+  CLEAR: 'CLEAR',
+  DELETE: 'DELETE',
+  COMMA: ',',
+};
 export const OPERATIONS = {
   plus: {
-    value: '+',
+    value: OPERATORS.PLUS,
     src: new URL('./assets/plus.png', import.meta.url).href,
   },
   minus: {
-    value: '-',
+    value: OPERATORS.MINUS,
     src: new URL('./assets/minus.png', import.meta.url).href,
   },
   multiply: {
-    value: '*',
+    value: OPERATORS.MULTIPLY,
     src: new URL('./assets/multiply.png', import.meta.url).href,
   },
   divide: {
-    value: '/',
+    value: OPERATORS.DIVIDE,
     src: new URL('./assets/divide.png', import.meta.url).href,
   },
   equals: {
-    value: 'RESULT',
+    value: OPERATORS.EQUALS,
     src: new URL('./assets/equals.png', import.meta.url).href,
   },
   comma: {
-    value: ',',
+    value: OPERATORS.COMMA,
     src: new URL('./assets/comma.png', import.meta.url).href,
   },
   clear: {
-    value: 'CLEAR',
+    value: OPERATORS.CLEAR,
     src: new URL('./assets/clear.png', import.meta.url).href,
+  },
+  delete: {
+    value: OPERATORS.DELETE,
+    src: new URL('./assets/delete.png', import.meta.url).href,
   },
 };

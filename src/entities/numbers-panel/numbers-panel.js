@@ -1,5 +1,6 @@
 import { OPERATIONS } from '@/shared/constant';
 import { Button } from '@/shared/ui/button/button';
+import { ButtonOperation } from '@/shared/ui/button-operation/button-operation';
 import { Component } from '@/shared/ui/component/component';
 
 import styles from './numbers-panel.module.scss';
@@ -11,28 +12,22 @@ const NUMBERS = [
   [OPERATIONS.comma, '0', OPERATIONS.equals],
 ];
 export class NumbersPanel extends Component {
+  #onClick;
+
   constructor({ onNumberClick }) {
     super({ tag: 'div', className: styles.container });
-    this.#renderView(onNumberClick);
+    this.#onClick = onNumberClick;
+    this.#renderView();
   }
 
-  #renderView(onNumberClick) {
+  #renderView() {
     NUMBERS.forEach((row) => {
       row.forEach((item) => {
         const isOperation = typeof item === 'object';
-        const button = new Button({
-          text: isOperation ? '' : item,
-          className: isOperation ? styles.operation : '',
-          onClick: () => onNumberClick(isOperation ? item.value : item),
-        });
-        if (isOperation) {
-          const img = new Component({
-            tag: 'img',
-            className: styles.img,
-          });
-          img.setAttribute('src', item.src);
-          button.append(img);
-        }
+        console.log('isOperation', isOperation, item);
+        const button = isOperation
+          ? new ButtonOperation({ operation: item, onClick: () => this.#onClick(item) })
+          : new Button({ text: item, onClick: () => this.#onClick(item) });
         this.append(button);
       });
     });

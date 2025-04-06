@@ -22,13 +22,14 @@
 
 .result,
 .display {
-  direction: rtl;
+  direction: ltr;
   overflow: auto;
 
   width: 100%;
   margin: 0;
 
   text-align: right;
+  white-space: nowrap;
 
   mask-image: linear-gradient(to left, black 80%, transparent);
 
