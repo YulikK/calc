@@ -9,15 +9,15 @@ export const OPERATIONS = {
   },
   multiply: {
     value: '*',
-    src: '@/shared/assets/multiply.png',
+    src: new URL('./assets/multiply.png', import.meta.url).href,
   },
   divide: {
     value: '/',
-    src: '@/shared/assets/divide.png',
+    src: new URL('./assets/divide.png', import.meta.url).href,
   },
   equals: {
     value: 'RESULT',
-    src: '@/shared/assets/equals.png',
+    src: new URL('./assets/equals.png', import.meta.url).href,
   },
   comma: {
     value: ',',

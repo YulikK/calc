@@ -8,7 +8,7 @@ const NUMBERS = [
   ['7', '8', '9'],
   ['4', '5', '6'],
   ['1', '2', '3'],
-  [OPERATIONS.clear, '0', OPERATIONS.comma],
+  [OPERATIONS.comma, '0', OPERATIONS.equals],
 ];
 export class NumbersPanel extends Component {
   constructor({ onNumberClick }) {
