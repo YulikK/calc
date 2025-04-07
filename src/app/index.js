@@ -1,3 +1,4 @@
+import '@/app/favicon.png';
 import '@/app/styles.scss';
 import { Calculator } from '@/widgets/calculator/calculator';
 
