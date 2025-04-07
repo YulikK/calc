@@ -49,6 +49,8 @@ export default class Calculator extends Component {
 
     if (!isNaN(mappedValue)) {
       this.onNumberClick(mappedValue);
+    } else if (mappedValue === OPERATORS.COPY && (event.ctrlKey || event.metaKey)) {
+      this.#copyClick();
     } else {
       this.onOperationClick({ value: mappedValue });
     }
