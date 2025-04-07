@@ -22,12 +22,13 @@
 
 .result,
 .display {
-  direction: ltr;
   overflow: auto;
 
   width: 100%;
+  min-height: 24px;
   margin: 0;
 
+  line-height: 24px;
   text-align: right;
   white-space: nowrap;
 
