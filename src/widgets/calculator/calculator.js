@@ -2,7 +2,7 @@ import ClearPanel from '@/entities/clear-panel/clear-panel';
 import { Display } from '@/entities/display/display';
 import { NumbersPanel } from '@/entities/numbers-panel/numbers-panel';
 import { OptionsPanel } from '@/entities/options-panel/options-panel';
-import { BUTTON_TYPE, ERROR, OPERATORS, STATES } from '@/shared/constant';
+import { BUTTON_TYPE, ERROR, KEY_MAPPINGS, OPERATORS, STATES } from '@/shared/constant';
 import { Component } from '@/shared/ui/component/component';
 import { calculateExpression } from '@/shared/util/calculate-expression';
 import {
@@ -14,8 +14,6 @@ import {
 
 import style from './calculator.module.scss';
 
-// TODO: add favicon
-//TODO: add keyboard support
 //TODO: add copy result
 //TODO: add theme switcher
 
@@ -33,7 +31,27 @@ export class Calculator extends Component {
   constructor() {
     super({ tag: 'div', className: style.container });
     this.#renderView();
+    this.#initKeyboardSupport();
   }
+
+  #initKeyboardSupport() {
+    document.addEventListener('keydown', this.#onKeyPress);
+  }
+
+  #onKeyPress = (event) => {
+    event.preventDefault();
+
+    const key = event.key;
+    const mappedValue = KEY_MAPPINGS[key];
+
+    if (!mappedValue) return;
+
+    if (!isNaN(mappedValue)) {
+      this.onNumberClick(mappedValue);
+    } else {
+      this.onOperationClick({ value: mappedValue });
+    }
+  };
 
   #renderView() {
     this.#display = new Display();

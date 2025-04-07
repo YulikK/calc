@@ -58,3 +58,26 @@ export const OPERATIONS = {
     src: new URL('./assets/delete.png', import.meta.url).href,
   },
 };
+
+export const KEY_MAPPINGS = {
+  0: '0',
+  1: '1',
+  2: '2',
+  3: '3',
+  4: '4',
+  5: '5',
+  6: '6',
+  7: '7',
+  8: '8',
+  9: '9',
+  '+': OPERATORS.PLUS,
+  '-': OPERATORS.MINUS,
+  '*': OPERATORS.MULTIPLY,
+  '/': OPERATORS.DIVIDE,
+  Enter: OPERATORS.EQUALS,
+  '=': OPERATORS.EQUALS,
+  Backspace: OPERATORS.CLEAR,
+  Delete: OPERATORS.DELETE,
+  '.': OPERATORS.COMMA,
+  ',': OPERATORS.COMMA,
+};
