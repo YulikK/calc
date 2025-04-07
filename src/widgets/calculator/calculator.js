@@ -1,4 +1,4 @@
-import ClearPanel from '@/entities/clear-panel/clear-panel';
+import ControlPanel from '@/entities/control-panel/control-panel';
 import Display from '@/entities/display/display';
 import NumbersPanel from '@/entities/numbers-panel/numbers-panel';
 import OptionsPanel from '@/entities/options-panel/options-panel';
@@ -59,7 +59,7 @@ export default class Calculator extends Component {
   #renderView() {
     this.#display = new Display();
     const panelsWrapper = new Component({ tag: 'div', className: style.wrapper });
-    const clearPanel = new ClearPanel({ onOperationClick: this.onOperationClick });
+    const clearPanel = new ControlPanel({ onOperationClick: this.onOperationClick });
     const numbersPanel = new NumbersPanel({
       onNumberClick: this.onNumberClick,
       onOperationClick: this.onOperationClick,
