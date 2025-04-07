@@ -1,7 +1,7 @@
 import { OPERATIONS } from '@/shared/constant';
-import { Button } from '@/shared/ui/button/button';
-import { ButtonOperation } from '@/shared/ui/button-operation/button-operation';
-import { Component } from '@/shared/ui/component/component';
+import Button from '@/shared/ui/button/button';
+import ButtonOperation from '@/shared/ui/button-operation/button-operation';
+import Component from '@/shared/ui/component/component';
 
 import styles from './numbers-panel.module.scss';
 
@@ -11,7 +11,7 @@ const NUMBERS = [
   ['1', '2', '3'],
   [OPERATIONS.comma, '0', OPERATIONS.equals],
 ];
-export class NumbersPanel extends Component {
+export default class NumbersPanel extends Component {
   #onNumberClick;
   #onOperationClick;
 

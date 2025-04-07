@@ -1,12 +1,12 @@
 import { OPERATIONS } from '@/shared/constant';
-import { ButtonOperation } from '@/shared/ui/button-operation/button-operation';
-import { Component } from '@/shared/ui/component/component';
+import ButtonOperation from '@/shared/ui/button-operation/button-operation';
+import Component from '@/shared/ui/component/component';
 
-import style from './clear-panel.module.scss';
+import style from './control-panel.module.scss';
 
-const options = [OPERATIONS.clear, OPERATIONS.delete];
+const options = [OPERATIONS.copy, OPERATIONS.clear, OPERATIONS.delete];
 
-export default class ClearPanel extends Component {
+export default class ControlPanel extends Component {
   #onClick;
 
   constructor({ onOperationClick }) {

@@ -1,8 +1,8 @@
-import { Component } from '@/shared/ui/component/component';
+import Component from '@/shared/ui/component/component';
 
 import style from './button.module.scss';
 
-export class Button extends Component {
+export default class Button extends Component {
   #onClick;
 
   constructor({ className = '', text, onClick }) {

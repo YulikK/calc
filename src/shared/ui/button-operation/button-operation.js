@@ -1,8 +1,8 @@
-import { Button } from '@/shared/ui/button/button';
-import { Component } from '@/shared/ui/component/component';
+import Button from '@/shared/ui/button/button';
+import Component from '@/shared/ui/component/component';
 
 import styles from './button-operation.module.scss';
-export class ButtonOperation extends Button {
+export default class ButtonOperation extends Button {
   #operation;
 
   constructor({ operation, className = '', onClick }) {

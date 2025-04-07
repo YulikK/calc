@@ -1,9 +1,10 @@
-import ClearPanel from '@/entities/clear-panel/clear-panel';
-import { Display } from '@/entities/display/display';
-import { NumbersPanel } from '@/entities/numbers-panel/numbers-panel';
-import { OptionsPanel } from '@/entities/options-panel/options-panel';
-import { BUTTON_TYPE, ERROR, OPERATORS, STATES } from '@/shared/constant';
-import { Component } from '@/shared/ui/component/component';
+import ControlPanel from '@/entities/control-panel/control-panel';
+import Display from '@/entities/display/display';
+import NumbersPanel from '@/entities/numbers-panel/numbers-panel';
+import OptionsPanel from '@/entities/options-panel/options-panel';
+import { BUTTON_TYPE, COPY_MSG, ERROR, KEY_MAPPINGS, OPERATORS, STATES } from '@/shared/constant';
+import Component from '@/shared/ui/component/component';
+import Notification from '@/shared/ui/notification/notification';
 import { calculateExpression } from '@/shared/util/calculate-expression';
 import {
   clearLastValue,
@@ -14,12 +15,9 @@ import {
 
 import style from './calculator.module.scss';
 
-// TODO: add favicon
-//TODO: add keyboard support
-//TODO: add copy result
 //TODO: add theme switcher
 
-export class Calculator extends Component {
+export default class Calculator extends Component {
   #display;
   #expression = [];
   #state = STATES.READY;
@@ -28,17 +26,40 @@ export class Calculator extends Component {
     [OPERATORS.CLEAR]: () => this.#clearClick(),
     [OPERATORS.EQUALS]: () => this.#equalsClick(),
     [OPERATORS.COMMA]: () => this.#commaClick(),
+    [OPERATORS.COPY]: () => this.#copyClick(),
   };
 
   constructor() {
     super({ tag: 'div', className: style.container });
     this.#renderView();
+    this.#initKeyboardSupport();
   }
+
+  #initKeyboardSupport() {
+    document.addEventListener('keydown', this.#onKeyPress);
+  }
+
+  #onKeyPress = (event) => {
+    event.preventDefault();
+
+    const key = event.key;
+    const mappedValue = KEY_MAPPINGS[key];
+
+    if (!mappedValue) return;
+
+    if (!isNaN(mappedValue)) {
+      this.onNumberClick(mappedValue);
+    } else if (mappedValue === OPERATORS.COPY && (event.ctrlKey || event.metaKey)) {
+      this.#copyClick();
+    } else {
+      this.onOperationClick({ value: mappedValue });
+    }
+  };
 
   #renderView() {
     this.#display = new Display();
     const panelsWrapper = new Component({ tag: 'div', className: style.wrapper });
-    const clearPanel = new ClearPanel({ onOperationClick: this.onOperationClick });
+    const clearPanel = new ControlPanel({ onOperationClick: this.onOperationClick });
     const numbersPanel = new NumbersPanel({
       onNumberClick: this.onNumberClick,
       onOperationClick: this.onOperationClick,
@@ -92,6 +113,14 @@ export class Calculator extends Component {
       this.#expression = [error];
       this.#displayResult(ERROR, expression);
     }
+  }
+
+  #copyClick() {
+    const value = this.#expression.join('');
+    navigator.clipboard.writeText(value).then(() => {
+      const notification = new Notification(COPY_MSG);
+      this.append(notification);
+    });
   }
 
   #commaClick() {

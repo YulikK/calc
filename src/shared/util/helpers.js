@@ -12,6 +12,10 @@ export function updateExpressionArray(expression, value) {
 
   if (!isOperator(value)) {
     if (!lastItem || !isLastItemOperator) {
+      if (lastItem && !isNaN(parseFloat(lastItem))) {
+        expression[expression.length - 1] += value;
+        return [...expression];
+      }
       return [...expression, value];
     }
     if (lastItem === OPERATORS.MINUS && isPreviousItemOperator) {
@@ -44,6 +48,12 @@ export function updateExpressionArray(expression, value) {
 export function updateExpressionWithComma(expression) {
   const lastItem = expression[expression.length - 1];
   const previousItem = expression[expression.length - 2];
+
+  if (lastItem === OPERATORS.MINUS && isOperator(previousItem)) {
+    const newExpression = [...expression];
+    newExpression[newExpression.length - 1] = `-${START_VALUE}${OPERATORS.COMMA}`;
+    return newExpression;
+  }
 
   if (!lastItem || isOperator(lastItem)) {
     return [...expression, `${START_VALUE}${OPERATORS.COMMA}`];
