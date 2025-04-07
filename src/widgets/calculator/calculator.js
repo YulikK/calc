@@ -2,7 +2,7 @@ import ClearPanel from '@/entities/clear-panel/clear-panel';
 import { Display } from '@/entities/display/display';
 import { NumbersPanel } from '@/entities/numbers-panel/numbers-panel';
 import { OptionsPanel } from '@/entities/options-panel/options-panel';
-import { OPERATORS, START_VALUE } from '@/shared/constant';
+import { ERROR, OPERATORS, START_VALUE } from '@/shared/constant';
 import { Component } from '@/shared/ui/component/component';
 import { calculateExpression } from '@/shared/util/calculate-expression';
 import { isOperator } from '@/shared/util/helpers';
@@ -19,10 +19,16 @@ const BUTTON_TYPE = {
   NUMBER: 'number',
   OPERATION: 'operation',
 };
+
+const STAGES = {
+  READY: 'ready',
+  RESULT: 'result',
+  ERROR: 'error',
+};
 export class Calculator extends Component {
   #display;
   #expression = [];
-  #isResult = false;
+  #stage = STAGES.READY;
 
   constructor() {
     super({ tag: 'div', className: style.container });
@@ -123,11 +129,17 @@ export class Calculator extends Component {
   }
 
   #equalsClick() {
-    const result = calculateExpression(this.#expression);
     const expression = this.#expression.join('');
-    this.#expression = [String(result)];
-    this.#displayResult(result, expression);
-    this.#isResult = true;
+    try {
+      const result = calculateExpression(this.#expression);
+      this.#stage = STAGES.RESULT;
+      this.#expression = [String(result)];
+      this.#displayResult(result, expression);
+    } catch (error) {
+      this.#stage = STAGES.ERROR;
+      this.#expression = [error];
+      this.#displayResult(ERROR, expression);
+    }
   }
 
   #commaClick() {
@@ -156,11 +168,14 @@ export class Calculator extends Component {
   }
 
   #displayRefresh(buttonType) {
-    if (buttonType === BUTTON_TYPE.OPERATION && this.#isResult) {
-      this.#isResult = false;
-    } else if (buttonType === BUTTON_TYPE.NUMBER && this.#isResult) {
+    if (buttonType === BUTTON_TYPE.OPERATION && this.#stage === STAGES.RESULT) {
+      this.#stage = STAGES.READY;
+    } else if (buttonType === BUTTON_TYPE.NUMBER && this.#stage === STAGES.RESULT) {
       this.#expression = [];
-      this.#isResult = false;
+      this.#stage = STAGES.READY;
+    } else if (this.#stage === STAGES.ERROR) {
+      this.#expression = [START_VALUE];
+      this.#stage = STAGES.READY;
     }
   }
 }

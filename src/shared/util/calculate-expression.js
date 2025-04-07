@@ -1,3 +1,5 @@
+import { ERROR } from '@/shared/constant';
+
 export function calculateExpression(expression) {
   console.log(expression);
   if (!expression.length) return 0;
@@ -32,9 +34,11 @@ export function calculateExpression(expression) {
           ? Number((numbers[i] * numbers[i + 1]).toFixed(10))
           : numbers[i + 1] !== 0
             ? Number((numbers[i] / numbers[i + 1]).toFixed(10))
-            : 'Error';
+            : ERROR;
 
-      if (result === 'Error') return 'Error';
+      if (result === ERROR || Number.isNaN(result)) {
+        throw new Error(ERROR);
+      }
 
       numbers.splice(i, 2, result);
       operators.splice(i, 1);

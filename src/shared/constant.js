@@ -11,6 +11,8 @@ export const OPERATORS = {
 
 export const START_VALUE = '0';
 
+export const ERROR = 'ERROR';
+
 export const OPERATIONS = {
   plus: {
     value: OPERATORS.PLUS,
