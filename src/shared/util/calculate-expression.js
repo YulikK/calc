@@ -1,10 +1,15 @@
 export function calculateExpression(expression) {
+  console.log(expression);
   if (!expression.length) return 0;
 
   const numbers = [];
   const operators = [];
 
   let currentNumber = '';
+
+  if (isNaN(expression[expression.length - 1])) {
+    expression.pop();
+  }
   expression.forEach((item) => {
     if (!isNaN(item)) {
       currentNumber += item;
@@ -24,9 +29,9 @@ export function calculateExpression(expression) {
     if (operators[i] === '*' || operators[i] === '/') {
       const result =
         operators[i] === '*'
-          ? numbers[i] * numbers[i + 1]
+          ? Number((numbers[i] * numbers[i + 1]).toFixed(10))
           : numbers[i + 1] !== 0
-            ? numbers[i] / numbers[i + 1]
+            ? Number((numbers[i] / numbers[i + 1]).toFixed(10))
             : 'Error';
 
       if (result === 'Error') return 'Error';
@@ -40,9 +45,9 @@ export function calculateExpression(expression) {
   let result = numbers[0];
   for (let i = 0; i < operators.length; i++) {
     if (operators[i] === '+') {
-      result += numbers[i + 1];
+      result = Number((result + numbers[i + 1]).toFixed(10));
     } else if (operators[i] === '-') {
-      result -= numbers[i + 1];
+      result = Number((result - numbers[i + 1]).toFixed(10));
     }
   }
 

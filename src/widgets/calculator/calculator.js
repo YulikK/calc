@@ -5,8 +5,15 @@ import { OptionsPanel } from '@/entities/options-panel/options-panel';
 import { OPERATORS, START_VALUE } from '@/shared/constant';
 import { Component } from '@/shared/ui/component/component';
 import { calculateExpression } from '@/shared/util/calculate-expression';
+import { isOperator } from '@/shared/util/helpers';
 
 import style from './calculator.module.scss';
+
+// TODO: if NAN or ERROR - refresh display
+// TODO: add favicon
+//TODO: add keyboard support
+//TODO: add copy result
+//TODO: add theme switcher
 
 const BUTTON_TYPE = {
   NUMBER: 'number',
@@ -36,59 +43,74 @@ export class Calculator extends Component {
   }
 
   onNumberClick = (number) => {
-    this.#onDisplayRefresh(BUTTON_TYPE.NUMBER);
-    this.#onExpressionUpdate(number);
+    this.#displayRefresh(BUTTON_TYPE.NUMBER);
+    this.#updateExpression(number);
   };
-
-  #onDisplayRefresh(buttonType) {
-    if (buttonType === BUTTON_TYPE.OPERATION && this.#isResult) {
-      this.#isResult = false;
-    } else if (buttonType === BUTTON_TYPE.NUMBER && this.#isResult) {
-      this.#expression = [];
-      this.#isResult = false;
-    }
-  }
 
   onOperationClick = (operation) => {
-    this.#onDisplayRefresh(BUTTON_TYPE.OPERATION);
+    this.#displayRefresh(
+      operation.value === OPERATORS.COMMA ? BUTTON_TYPE.NUMBER : BUTTON_TYPE.OPERATION
+    );
     if (operation.value === OPERATORS.DELETE) {
-      this.#onDeleteClick();
+      this.#deleteClick();
     } else if (operation.value === OPERATORS.CLEAR) {
-      this.#onClearClick();
+      this.#clearClick();
     } else if (operation.value === OPERATORS.EQUALS) {
-      this.#onEqualsClick();
+      this.#equalsClick();
     } else if (operation.value === OPERATORS.COMMA) {
-      this.#onCommaClick();
+      this.#commaClick();
     } else {
-      this.#onExpressionUpdate(operation.value);
+      this.#updateExpression(operation.value);
     }
   };
 
-  #onExpressionUpdate(value) {
+  #updateExpression(value) {
     const lastItem = this.#expression[this.#expression.length - 1];
-    const isValueOperator = Object.values(OPERATORS).includes(value);
-    if (isValueOperator) {
-      if (Object.values(OPERATORS).includes(lastItem)) {
-        this.#expression[this.#expression.length - 1] = value;
-      } else {
+    const previousItem = this.#expression[this.#expression.length - 2];
+    const isLastItemOperator = isOperator(lastItem);
+    const isPreviousItemOperator = isOperator(previousItem);
+    if (isOperator(value)) {
+      if (!isLastItemOperator) {
         this.#expression.push(value);
+      } else if (isPreviousItemOperator && isLastItemOperator && value === OPERATORS.MINUS) {
+        this.#expression[this.#expression.length - 1] = value;
+      } else if (isPreviousItemOperator && isLastItemOperator && value !== OPERATORS.MINUS) {
+        this.#expression.pop();
+        this.#expression[this.#expression.length - 1] = value;
+      } else if (
+        isLastItemOperator &&
+        (lastItem === OPERATORS.MINUS || lastItem === OPERATORS.PLUS)
+      ) {
+        this.#expression[this.#expression.length - 1] = value;
+      } else if (
+        isLastItemOperator &&
+        value === OPERATORS.MINUS &&
+        (lastItem === OPERATORS.DIVIDE || lastItem === OPERATORS.MULTIPLY)
+      ) {
+        this.#expression.push(value);
+      } else {
+        this.#expression[this.#expression.length - 1] = value;
       }
     } else {
-      if (!isNaN(Number(lastItem))) {
+      if (
+        !isNaN(Number(lastItem)) ||
+        (lastItem === OPERATORS.MINUS && isPreviousItemOperator) ||
+        this.#expression.length === 1
+      ) {
         this.#expression[this.#expression.length - 1] += value;
       } else {
         this.#expression.push(value);
       }
     }
-    this.#onDisplayUpdate();
+    this.#displayUpdate();
   }
 
-  #onDeleteClick() {
+  #deleteClick() {
     this.#expression = [];
-    this.#onDisplayUpdate();
+    this.#displayUpdate();
   }
 
-  #onClearClick() {
+  #clearClick() {
     if (this.#expression.length > 0) {
       const lastItem = this.#expression[this.#expression.length - 1];
       if (lastItem.length > 1) {
@@ -97,32 +119,48 @@ export class Calculator extends Component {
         this.#expression.pop();
       }
     }
-    this.#onDisplayUpdate();
+    this.#displayUpdate();
   }
 
-  #onEqualsClick() {
+  #equalsClick() {
     const result = calculateExpression(this.#expression);
     const expression = this.#expression.join('');
     this.#expression = [String(result)];
-    this.#onDisplayResult(result, expression);
+    this.#displayResult(result, expression);
     this.#isResult = true;
   }
 
-  #onCommaClick() {
+  #commaClick() {
     const lastItem = this.#expression[this.#expression.length - 1];
-    if (!lastItem || Object.values(OPERATORS).includes(lastItem)) {
+    const previousItem = this.#expression[this.#expression.length - 2];
+    if (!lastItem) {
+      this.#expression.push(`${START_VALUE}${OPERATORS.COMMA}`);
+    } else if (lastItem === OPERATORS.MINUS && isOperator(previousItem)) {
+      this.#expression[this.#expression.length - 1] += `${START_VALUE}${OPERATORS.COMMA}`;
+    } else if (lastItem === OPERATORS.MINUS) {
+      this.#expression.push(`${START_VALUE}${OPERATORS.COMMA}`);
+    } else if (isOperator(lastItem)) {
       this.#expression.push(`${START_VALUE}${OPERATORS.COMMA}`);
     } else if (!lastItem.includes(OPERATORS.COMMA)) {
       this.#expression[this.#expression.length - 1] += OPERATORS.COMMA;
     }
-    this.#onDisplayUpdate();
+    this.#displayUpdate();
   }
 
-  #onDisplayUpdate() {
+  #displayUpdate() {
     this.#display.onDisplayChange(this.#expression.join(''));
   }
 
-  #onDisplayResult(result, expression) {
+  #displayResult(result, expression) {
     this.#display.onDisplayResult(result, expression);
+  }
+
+  #displayRefresh(buttonType) {
+    if (buttonType === BUTTON_TYPE.OPERATION && this.#isResult) {
+      this.#isResult = false;
+    } else if (buttonType === BUTTON_TYPE.NUMBER && this.#isResult) {
+      this.#expression = [];
+      this.#isResult = false;
+    }
   }
 }

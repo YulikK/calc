@@ -4,7 +4,7 @@ import { Component } from '@/shared/ui/component/component';
 
 import styles from './options-panel.module.scss';
 
-const options = [OPERATIONS.plus, OPERATIONS.minus, OPERATIONS.multiply, OPERATIONS.divide];
+const options = [OPERATIONS.divide, OPERATIONS.multiply, OPERATIONS.minus, OPERATIONS.plus];
 
 export class OptionsPanel extends Component {
   #onClick;
