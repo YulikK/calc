@@ -21,6 +21,7 @@ export default {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/app/index.html',
+      favicon: './src/app/favicon.png',
     }),
     new MiniCssExtractPlugin(),
   ],
@@ -48,6 +49,13 @@ export default {
           'postcss-loader',
           'sass-loader',
         ],
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/[name][ext]',
+        },
       },
     ],
   },

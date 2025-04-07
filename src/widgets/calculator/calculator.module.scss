@@ -1,5 +1,16 @@
+@use '@/shared/styles/variables' as *;
+
 .container {
   display: flex;
   flex-direction: column;
+  gap: $gap-size;
   align-items: center;
+  justify-content: center;
+
+  padding: 20px 40px;
+}
+
+.wrapper {
+  display: flex;
+  gap: $gap-size;
 }

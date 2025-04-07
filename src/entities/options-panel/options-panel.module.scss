@@ -1,0 +1,7 @@
+@use '@/shared/styles/variables' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-size;
+}

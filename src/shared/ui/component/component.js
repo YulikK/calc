@@ -34,6 +34,7 @@ export class Component {
 
   setTextContent(content) {
     this.#node.textContent = content;
+    this.#node.scrollLeft = this.#node.scrollWidth;
   }
 
   setAttribute(attribute, value) {

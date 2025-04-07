@@ -1,0 +1,14 @@
+@use '@/shared/styles/variables' as *;
+
+.operation {
+  background-color: $color-option-light;
+
+  &:hover {
+    background-color: $color-option-light-hover;
+  }
+}
+
+.img {
+  width: $icon-size;
+  height: $icon-size;
+}
