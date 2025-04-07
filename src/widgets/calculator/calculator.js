@@ -8,9 +8,14 @@ import { calculateExpression } from '@/shared/util/calculate-expression';
 
 import style from './calculator.module.scss';
 
+const BUTTON_TYPE = {
+  NUMBER: 'number',
+  OPERATION: 'operation',
+};
 export class Calculator extends Component {
   #display;
   #expression = [];
+  #isResult = false;
 
   constructor() {
     super({ tag: 'div', className: style.container });
@@ -31,10 +36,21 @@ export class Calculator extends Component {
   }
 
   onNumberClick = (number) => {
+    this.#onDisplayRefresh(BUTTON_TYPE.NUMBER);
     this.#onExpressionUpdate(number);
   };
 
+  #onDisplayRefresh(buttonType) {
+    if (buttonType === BUTTON_TYPE.OPERATION && this.#isResult) {
+      this.#isResult = false;
+    } else if (buttonType === BUTTON_TYPE.NUMBER && this.#isResult) {
+      this.#expression = [];
+      this.#isResult = false;
+    }
+  }
+
   onOperationClick = (operation) => {
+    this.#onDisplayRefresh(BUTTON_TYPE.OPERATION);
     if (operation.value === OPERATORS.DELETE) {
       this.#onDeleteClick();
     } else if (operation.value === OPERATORS.CLEAR) {
@@ -89,6 +105,7 @@ export class Calculator extends Component {
     const expression = this.#expression.join('');
     this.#expression = [String(result)];
     this.#onDisplayResult(result, expression);
+    this.#isResult = true;
   }
 
   #onCommaClick() {
