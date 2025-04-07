@@ -2,33 +2,33 @@ import ClearPanel from '@/entities/clear-panel/clear-panel';
 import { Display } from '@/entities/display/display';
 import { NumbersPanel } from '@/entities/numbers-panel/numbers-panel';
 import { OptionsPanel } from '@/entities/options-panel/options-panel';
-import { ERROR, OPERATORS, START_VALUE } from '@/shared/constant';
+import { BUTTON_TYPE, ERROR, OPERATORS, STATES } from '@/shared/constant';
 import { Component } from '@/shared/ui/component/component';
 import { calculateExpression } from '@/shared/util/calculate-expression';
-import { isOperator } from '@/shared/util/helpers';
+import {
+  clearLastValue,
+  getCalcState,
+  updateExpressionArray,
+  updateExpressionWithComma,
+} from '@/shared/util/helpers';
 
 import style from './calculator.module.scss';
 
-// TODO: if NAN or ERROR - refresh display
 // TODO: add favicon
 //TODO: add keyboard support
 //TODO: add copy result
 //TODO: add theme switcher
 
-const BUTTON_TYPE = {
-  NUMBER: 'number',
-  OPERATION: 'operation',
-};
-
-const STAGES = {
-  READY: 'ready',
-  RESULT: 'result',
-  ERROR: 'error',
-};
 export class Calculator extends Component {
   #display;
   #expression = [];
-  #stage = STAGES.READY;
+  #state = STATES.READY;
+  #operationHandlers = {
+    [OPERATORS.DELETE]: () => this.#deleteClick(),
+    [OPERATORS.CLEAR]: () => this.#clearClick(),
+    [OPERATORS.EQUALS]: () => this.#equalsClick(),
+    [OPERATORS.COMMA]: () => this.#commaClick(),
+  };
 
   constructor() {
     super({ tag: 'div', className: style.container });
@@ -57,57 +57,16 @@ export class Calculator extends Component {
     this.#displayRefresh(
       operation.value === OPERATORS.COMMA ? BUTTON_TYPE.NUMBER : BUTTON_TYPE.OPERATION
     );
-    if (operation.value === OPERATORS.DELETE) {
-      this.#deleteClick();
-    } else if (operation.value === OPERATORS.CLEAR) {
-      this.#clearClick();
-    } else if (operation.value === OPERATORS.EQUALS) {
-      this.#equalsClick();
-    } else if (operation.value === OPERATORS.COMMA) {
-      this.#commaClick();
+    const handler = this.#operationHandlers[operation.value];
+    if (handler) {
+      handler();
     } else {
       this.#updateExpression(operation.value);
     }
   };
 
   #updateExpression(value) {
-    const lastItem = this.#expression[this.#expression.length - 1];
-    const previousItem = this.#expression[this.#expression.length - 2];
-    const isLastItemOperator = isOperator(lastItem);
-    const isPreviousItemOperator = isOperator(previousItem);
-    if (isOperator(value)) {
-      if (!isLastItemOperator) {
-        this.#expression.push(value);
-      } else if (isPreviousItemOperator && isLastItemOperator && value === OPERATORS.MINUS) {
-        this.#expression[this.#expression.length - 1] = value;
-      } else if (isPreviousItemOperator && isLastItemOperator && value !== OPERATORS.MINUS) {
-        this.#expression.pop();
-        this.#expression[this.#expression.length - 1] = value;
-      } else if (
-        isLastItemOperator &&
-        (lastItem === OPERATORS.MINUS || lastItem === OPERATORS.PLUS)
-      ) {
-        this.#expression[this.#expression.length - 1] = value;
-      } else if (
-        isLastItemOperator &&
-        value === OPERATORS.MINUS &&
-        (lastItem === OPERATORS.DIVIDE || lastItem === OPERATORS.MULTIPLY)
-      ) {
-        this.#expression.push(value);
-      } else {
-        this.#expression[this.#expression.length - 1] = value;
-      }
-    } else {
-      if (
-        !isNaN(Number(lastItem)) ||
-        (lastItem === OPERATORS.MINUS && isPreviousItemOperator) ||
-        this.#expression.length === 1
-      ) {
-        this.#expression[this.#expression.length - 1] += value;
-      } else {
-        this.#expression.push(value);
-      }
-    }
+    this.#expression = updateExpressionArray(this.#expression, value);
     this.#displayUpdate();
   }
 
@@ -117,14 +76,7 @@ export class Calculator extends Component {
   }
 
   #clearClick() {
-    if (this.#expression.length > 0) {
-      const lastItem = this.#expression[this.#expression.length - 1];
-      if (lastItem.length > 1) {
-        this.#expression[this.#expression.length - 1] = lastItem.slice(0, -1);
-      } else {
-        this.#expression.pop();
-      }
-    }
+    this.#expression = clearLastValue(this.#expression);
     this.#displayUpdate();
   }
 
@@ -132,30 +84,18 @@ export class Calculator extends Component {
     const expression = this.#expression.join('');
     try {
       const result = calculateExpression(this.#expression);
-      this.#stage = STAGES.RESULT;
+      this.#state = STATES.RESULT;
       this.#expression = [String(result)];
       this.#displayResult(result, expression);
     } catch (error) {
-      this.#stage = STAGES.ERROR;
+      this.#state = STATES.ERROR;
       this.#expression = [error];
       this.#displayResult(ERROR, expression);
     }
   }
 
   #commaClick() {
-    const lastItem = this.#expression[this.#expression.length - 1];
-    const previousItem = this.#expression[this.#expression.length - 2];
-    if (!lastItem) {
-      this.#expression.push(`${START_VALUE}${OPERATORS.COMMA}`);
-    } else if (lastItem === OPERATORS.MINUS && isOperator(previousItem)) {
-      this.#expression[this.#expression.length - 1] += `${START_VALUE}${OPERATORS.COMMA}`;
-    } else if (lastItem === OPERATORS.MINUS) {
-      this.#expression.push(`${START_VALUE}${OPERATORS.COMMA}`);
-    } else if (isOperator(lastItem)) {
-      this.#expression.push(`${START_VALUE}${OPERATORS.COMMA}`);
-    } else if (!lastItem.includes(OPERATORS.COMMA)) {
-      this.#expression[this.#expression.length - 1] += OPERATORS.COMMA;
-    }
+    this.#expression = updateExpressionWithComma(this.#expression);
     this.#displayUpdate();
   }
 
@@ -168,14 +108,10 @@ export class Calculator extends Component {
   }
 
   #displayRefresh(buttonType) {
-    if (buttonType === BUTTON_TYPE.OPERATION && this.#stage === STAGES.RESULT) {
-      this.#stage = STAGES.READY;
-    } else if (buttonType === BUTTON_TYPE.NUMBER && this.#stage === STAGES.RESULT) {
-      this.#expression = [];
-      this.#stage = STAGES.READY;
-    } else if (this.#stage === STAGES.ERROR) {
-      this.#expression = [START_VALUE];
-      this.#stage = STAGES.READY;
+    const newState = getCalcState(this.#state, buttonType);
+    this.#state = newState.stage;
+    if (newState.expression !== null) {
+      this.#expression = newState.expression;
     }
   }
 }

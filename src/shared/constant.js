@@ -13,6 +13,17 @@ export const START_VALUE = '0';
 
 export const ERROR = 'ERROR';
 
+export const BUTTON_TYPE = {
+  NUMBER: 'number',
+  OPERATION: 'operation',
+};
+
+export const STATES = {
+  READY: 'ready',
+  RESULT: 'result',
+  ERROR: 'error',
+};
+
 export const OPERATIONS = {
   plus: {
     value: OPERATORS.PLUS,
