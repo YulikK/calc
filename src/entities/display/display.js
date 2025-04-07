@@ -9,15 +9,18 @@ export class Display extends Component {
   }
 
   #renderView() {
-    this.result = new Component({ tag: 'p', className: style.result, text: '' });
+    this.expression = new Component({ tag: 'p', className: style.result, text: '' });
     this.display = new Component({ tag: 'p', className: style.display, text: '' });
-    this.appendChildren([this.result, this.display]);
+    this.appendChildren([this.expression, this.display]);
   }
 
   onDisplayChange(value) {
-    console.log('onDisplayChange', value);
     this.display.setTextContent(value);
-    const element = this.display.getNode();
-    element.scrollLeft = element.scrollWidth;
+    this.expression.setTextContent('');
+  }
+
+  onDisplayResult(value, expression) {
+    this.expression.setTextContent(expression);
+    this.display.setTextContent(value);
   }
 }

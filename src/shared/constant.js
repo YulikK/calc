@@ -6,8 +6,11 @@ export const OPERATORS = {
   EQUALS: 'RESULT',
   CLEAR: 'CLEAR',
   DELETE: 'DELETE',
-  COMMA: ',',
+  COMMA: '.',
 };
+
+export const START_VALUE = '0';
+
 export const OPERATIONS = {
   plus: {
     value: OPERATORS.PLUS,

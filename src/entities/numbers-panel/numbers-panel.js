@@ -12,11 +12,13 @@ const NUMBERS = [
   [OPERATIONS.comma, '0', OPERATIONS.equals],
 ];
 export class NumbersPanel extends Component {
-  #onClick;
+  #onNumberClick;
+  #onOperationClick;
 
-  constructor({ onNumberClick }) {
+  constructor({ onNumberClick, onOperationClick }) {
     super({ tag: 'div', className: styles.container });
-    this.#onClick = onNumberClick;
+    this.#onNumberClick = onNumberClick;
+    this.#onOperationClick = onOperationClick;
     this.#renderView();
   }
 
@@ -24,10 +26,9 @@ export class NumbersPanel extends Component {
     NUMBERS.forEach((row) => {
       row.forEach((item) => {
         const isOperation = typeof item === 'object';
-        console.log('isOperation', isOperation, item);
         const button = isOperation
-          ? new ButtonOperation({ operation: item, onClick: () => this.#onClick(item) })
-          : new Button({ text: item, onClick: () => this.#onClick(item) });
+          ? new ButtonOperation({ operation: item, onClick: () => this.#onOperationClick(item) })
+          : new Button({ text: item, onClick: () => this.#onNumberClick(item) });
         this.append(button);
       });
     });
