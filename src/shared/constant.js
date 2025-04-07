@@ -86,6 +86,7 @@ export const KEY_MAPPINGS = {
   '.': OPERATORS.COMMA,
   ',': OPERATORS.COMMA,
   c: OPERATORS.COPY,
+  Escape: OPERATORS.DELETE,
 };
 
 export const COPY_MSG = 'Copied to clipboard!';
