@@ -1,9 +1,9 @@
 import { START_VALUE } from '@/shared/constant';
-import { Component } from '@/shared/ui/component/component';
+import Component from '@/shared/ui/component/component';
 
 import style from './display.module.scss';
 
-export class Display extends Component {
+export default class Display extends Component {
   constructor() {
     super({ tag: 'div', className: style.container });
     this.#renderView();

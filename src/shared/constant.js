@@ -7,6 +7,7 @@ export const OPERATORS = {
   CLEAR: 'CLEAR',
   DELETE: 'DELETE',
   COMMA: '.',
+  COPY: 'COPY',
 };
 
 export const START_VALUE = '0';
@@ -57,6 +58,10 @@ export const OPERATIONS = {
     value: OPERATORS.DELETE,
     src: new URL('./assets/delete.png', import.meta.url).href,
   },
+  copy: {
+    value: OPERATORS.COPY,
+    src: new URL('./assets/copy.png', import.meta.url).href,
+  },
 };
 
 export const KEY_MAPPINGS = {
@@ -81,3 +86,5 @@ export const KEY_MAPPINGS = {
   '.': OPERATORS.COMMA,
   ',': OPERATORS.COMMA,
 };
+
+export const COPY_MSG = 'Copied to clipboard!';

@@ -1,9 +1,10 @@
 import ClearPanel from '@/entities/clear-panel/clear-panel';
-import { Display } from '@/entities/display/display';
-import { NumbersPanel } from '@/entities/numbers-panel/numbers-panel';
-import { OptionsPanel } from '@/entities/options-panel/options-panel';
-import { BUTTON_TYPE, ERROR, KEY_MAPPINGS, OPERATORS, STATES } from '@/shared/constant';
-import { Component } from '@/shared/ui/component/component';
+import Display from '@/entities/display/display';
+import NumbersPanel from '@/entities/numbers-panel/numbers-panel';
+import OptionsPanel from '@/entities/options-panel/options-panel';
+import { BUTTON_TYPE, COPY_MSG, ERROR, KEY_MAPPINGS, OPERATORS, STATES } from '@/shared/constant';
+import Component from '@/shared/ui/component/component';
+import Notification from '@/shared/ui/notification/notification';
 import { calculateExpression } from '@/shared/util/calculate-expression';
 import {
   clearLastValue,
@@ -14,10 +15,9 @@ import {
 
 import style from './calculator.module.scss';
 
-//TODO: add copy result
 //TODO: add theme switcher
 
-export class Calculator extends Component {
+export default class Calculator extends Component {
   #display;
   #expression = [];
   #state = STATES.READY;
@@ -26,6 +26,7 @@ export class Calculator extends Component {
     [OPERATORS.CLEAR]: () => this.#clearClick(),
     [OPERATORS.EQUALS]: () => this.#equalsClick(),
     [OPERATORS.COMMA]: () => this.#commaClick(),
+    [OPERATORS.COPY]: () => this.#copyClick(),
   };
 
   constructor() {
@@ -110,6 +111,14 @@ export class Calculator extends Component {
       this.#expression = [error];
       this.#displayResult(ERROR, expression);
     }
+  }
+
+  #copyClick() {
+    const value = this.#expression.join('');
+    navigator.clipboard.writeText(value).then(() => {
+      const notification = new Notification(COPY_MSG);
+      this.append(notification);
+    });
   }
 
   #commaClick() {
