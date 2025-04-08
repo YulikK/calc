@@ -2,28 +2,27 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default {
-  mode: 'development',
+  mode: 'production',
   entry: './src/app/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    filename: '[name].[contenthash].js',
+    clean: true,
   },
-  devServer: {
-    static: './dist',
-    hot: true,
+  optimization: {
+    minimize: true,
+    splitChunks: {
+      chunks: 'all',
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/app/index.html',
-      favicon: './src/app/favicon.png',
     }),
-    new MiniCssExtractPlugin(),
   ],
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -36,7 +35,7 @@ export default {
       {
         test: /\.module\.scss$/,
         use: [
-          MiniCssExtractPlugin.loader,
+          'style-loader',
           {
             loader: 'css-loader',
             options: {
@@ -53,13 +52,16 @@ export default {
       {
         test: /\.scss$/,
         exclude: /\.module\.scss$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader'],
+        use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: 'asset/resource',
+        type: 'asset/inline',
         generator: {
-          filename: 'assets/[name][ext]',
+          dataUrl: {
+            encoding: 'base64',
+            mimetype: 'image/png',
+          },
         },
       },
     ],
