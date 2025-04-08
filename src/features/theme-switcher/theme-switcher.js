@@ -17,9 +17,10 @@ const THEMES = [
 
 export default class ThemeSwitcher extends ButtonOperation {
   #currentThemeIndex = 0;
-  constructor() {
+  constructor({ className }) {
     super({
       operation: THEMES[0],
+      className,
       onClick: () => this.#onClick(),
     });
     this.#setTheme(0, this.#currentThemeIndex);
