@@ -11,7 +11,7 @@
     "lint:fix": "eslint src/ --fix",
     "format": "prettier --write src/",
     "prepare": "husky install",
-    "deploy": "npm run build && gh-pages -d src/dist -e calc",
+    "deploy": "npm run build && gh-pages -d dist",
     "stylelint": "stylelint \"**/*.scss\"",
     "stylelint:fix": "stylelint \"**/*.scss\" --fix"
   },
@@ -26,6 +26,7 @@
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.2.6",
+    "gh-pages": "^6.3.0",
     "html-webpack-plugin": "^5.6.3",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.0",
