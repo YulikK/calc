@@ -1,7 +1,6 @@
 import ControlPanel from '@/entities/control-panel/control-panel';
 import Display from '@/entities/display/display';
 import Notification from '@/entities/notification/notification';
-import NumbersPanel from '@/entities/numbers-panel/numbers-panel';
 import OptionsPanel from '@/entities/options-panel/options-panel';
 import { BUTTON_TYPE, COPY_MSG, ERROR, KEY_MAPPINGS, OPTIONS, STATES } from '@/shared/constant';
 import Component from '@/shared/ui/component/component';
@@ -11,11 +10,12 @@ import {
   getCalcState,
   updateExpressionArray,
   updateExpressionWithComma,
+  updateExpressionWithNumber,
+  updateExpressionWithPercent,
+  updateExpressionWithSign,
 } from '@/shared/util/helpers';
 
 import style from './calculator.module.scss';
-
-//TODO: add theme switcher
 
 export default class Calculator extends Component {
   #display;
@@ -27,6 +27,8 @@ export default class Calculator extends Component {
     [OPTIONS.EQUALS]: () => this.#equalsClick(),
     [OPTIONS.COMMA]: () => this.#commaClick(),
     [OPTIONS.COPY]: () => this.#copyClick(),
+    [OPTIONS.SIGN]: () => this.#signClick(),
+    [OPTIONS.PERCENT]: () => this.#percentClick(),
   };
 
   constructor() {
@@ -59,19 +61,20 @@ export default class Calculator extends Component {
   #renderView() {
     this.#display = new Display();
     const panelsWrapper = new Component({ tag: 'div', className: style.wrapper });
-    const clearPanel = new ControlPanel({ onOperationClick: this.onOperationClick });
-    const numbersPanel = new NumbersPanel({
+    const controlPanel = new ControlPanel({ onOperationClick: this.onOperationClick });
+
+    const optionsPanel = new OptionsPanel({
       onNumberClick: this.onNumberClick,
       onOperationClick: this.onOperationClick,
     });
-    const optionsPanel = new OptionsPanel({ onOperationClick: this.onOperationClick });
-    panelsWrapper.appendChildren([numbersPanel, optionsPanel]);
-    this.appendChildren([this.#display, clearPanel, panelsWrapper]);
+    panelsWrapper.appendChildren([optionsPanel]);
+    this.appendChildren([controlPanel, this.#display, panelsWrapper]);
   }
 
   onNumberClick = (number) => {
     this.#displayRefresh(BUTTON_TYPE.NUMBER);
-    this.#updateExpression(number);
+    this.#expression = updateExpressionWithNumber(this.#expression, number);
+    this.#displayUpdate();
   };
 
   onOperationClick = (operation) => {
@@ -125,6 +128,16 @@ export default class Calculator extends Component {
 
   #commaClick() {
     this.#expression = updateExpressionWithComma(this.#expression);
+    this.#displayUpdate();
+  }
+
+  #signClick() {
+    this.#expression = updateExpressionWithSign(this.#expression);
+    this.#displayUpdate();
+  }
+
+  #percentClick() {
+    this.#expression = updateExpressionWithPercent(this.#expression);
     this.#displayUpdate();
   }
 
