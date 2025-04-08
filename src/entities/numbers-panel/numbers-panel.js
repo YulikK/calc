@@ -1,4 +1,4 @@
-import { OPERATIONS } from '@/shared/constant';
+import { OPTION_BUTTONS } from '@/shared/constant';
 import Button from '@/shared/ui/button/button';
 import ButtonOperation from '@/shared/ui/button-operation/button-operation';
 import Component from '@/shared/ui/component/component';
@@ -9,7 +9,7 @@ const NUMBERS = [
   ['7', '8', '9'],
   ['4', '5', '6'],
   ['1', '2', '3'],
-  [OPERATIONS.comma, '0', OPERATIONS.equals],
+  [OPTION_BUTTONS.comma, '0', OPTION_BUTTONS.equals],
 ];
 export default class NumbersPanel extends Component {
   #onNumberClick;

@@ -34,7 +34,7 @@ export default {
   module: {
     rules: [
       {
-        test: /\.scss$/,
+        test: /\.module\.scss$/,
         use: [
           MiniCssExtractPlugin.loader,
           {
@@ -49,6 +49,11 @@ export default {
           'postcss-loader',
           'sass-loader',
         ],
+      },
+      {
+        test: /\.scss$/,
+        exclude: /\.module\.scss$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader'],
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,

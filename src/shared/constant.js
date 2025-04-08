@@ -25,7 +25,7 @@ export const STATES = {
   ERROR: 'error',
 };
 
-export const OPERATIONS = {
+export const OPTION_BUTTONS = {
   plus: {
     value: OPTIONS.PLUS,
     src: new URL('./assets/plus.png', import.meta.url).href,

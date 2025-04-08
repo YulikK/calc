@@ -4,7 +4,7 @@ import Component from '@/shared/ui/component/component';
 import styles from './button-operation.module.scss';
 export default class ButtonOperation extends Button {
   #operation;
-
+  #img;
   constructor({ operation, className = '', onClick }) {
     const buttonClass = `${className} ${styles.operation}`.trim();
     super({ className: buttonClass, text: '', onClick });
@@ -13,11 +13,14 @@ export default class ButtonOperation extends Button {
   }
 
   #renderView() {
-    const img = new Component({
+    this.#img = new Component({
       tag: 'img',
       className: styles.img,
     });
-    img.setAttribute('src', this.#operation.src);
-    this.append(img);
+    this.#img.setAttribute('src', this.#operation.src);
+    this.append(this.#img);
+  }
+  setImage(src) {
+    this.#img.setAttribute('src', src);
   }
 }
