@@ -5,7 +5,6 @@ function formatNumber(value) {
 }
 
 export function calculateExpression(expression) {
-  console.log(expression);
   if (!expression.length) return 0;
 
   const numbers = [];
@@ -37,8 +36,6 @@ export function calculateExpression(expression) {
   if (currentNumber) {
     numbers.push(parseFloat(currentNumber));
   }
-  console.log(numbers);
-  console.log(options);
 
   for (let i = 0; i < options.length; i++) {
     if (MAX_SCORE_OPERATIONS.includes(options[i])) {

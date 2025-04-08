@@ -74,7 +74,6 @@ export default class Calculator extends Component {
   onNumberClick = (number) => {
     this.#displayRefresh(BUTTON_TYPE.NUMBER);
     this.#expression = updateExpressionWithNumber(this.#expression, number);
-    console.log(this.#expression);
     this.#displayUpdate();
   };
 
@@ -92,7 +91,6 @@ export default class Calculator extends Component {
 
   #updateExpression(value) {
     this.#expression = updateExpressionArray(this.#expression, value);
-    console.log(this.#expression);
     this.#displayUpdate();
   }
 
