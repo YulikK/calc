@@ -78,6 +78,8 @@ export default class OptionsPanel extends Component {
       onClick: () => this.#onNumberClick(START_VALUE),
       className: styles.zero,
     });
+    button.setAttribute('aria-label', `Number ${START_VALUE}`);
+    button.setAttribute('title', `Press ${START_VALUE}`);
     this.append(button);
   }
 }

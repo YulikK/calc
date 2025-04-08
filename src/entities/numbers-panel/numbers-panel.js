@@ -16,6 +16,8 @@ export default class NumbersPanel extends Component {
   #renderView() {
     NUMBERS.forEach((item) => {
       const button = new Button({ text: item, onClick: () => this.#onNumberClick(item) });
+      button.setAttribute('aria-label', `Number ${item}`);
+      button.setAttribute('title', `Press ${item}`);
       this.append(button);
     });
   }

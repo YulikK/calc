@@ -1,5 +1,6 @@
 import ButtonOperation from '@/shared/ui/button-operation/button-operation';
 
+const TITLE = 'Switch theme';
 const THEMES = [
   {
     className: 'forest',
@@ -23,6 +24,8 @@ export default class ThemeSwitcher extends ButtonOperation {
       className,
       onClick: () => this.#onClick(),
     });
+    this.setAttribute('title', TITLE);
+    this.setAttribute('aria-label', TITLE);
     this.#setTheme(0, this.#currentThemeIndex);
   }
 
