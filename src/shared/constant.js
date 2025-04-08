@@ -1,4 +1,4 @@
-export const OPERATORS = {
+export const OPTIONS = {
   PLUS: '+',
   MINUS: '-',
   MULTIPLY: '*',
@@ -27,39 +27,39 @@ export const STATES = {
 
 export const OPERATIONS = {
   plus: {
-    value: OPERATORS.PLUS,
+    value: OPTIONS.PLUS,
     src: new URL('./assets/plus.png', import.meta.url).href,
   },
   minus: {
-    value: OPERATORS.MINUS,
+    value: OPTIONS.MINUS,
     src: new URL('./assets/minus.png', import.meta.url).href,
   },
   multiply: {
-    value: OPERATORS.MULTIPLY,
+    value: OPTIONS.MULTIPLY,
     src: new URL('./assets/multiply.png', import.meta.url).href,
   },
   divide: {
-    value: OPERATORS.DIVIDE,
+    value: OPTIONS.DIVIDE,
     src: new URL('./assets/divide.png', import.meta.url).href,
   },
   equals: {
-    value: OPERATORS.EQUALS,
+    value: OPTIONS.EQUALS,
     src: new URL('./assets/equals.png', import.meta.url).href,
   },
   comma: {
-    value: OPERATORS.COMMA,
+    value: OPTIONS.COMMA,
     src: new URL('./assets/comma.png', import.meta.url).href,
   },
   clear: {
-    value: OPERATORS.CLEAR,
+    value: OPTIONS.CLEAR,
     src: new URL('./assets/clear.png', import.meta.url).href,
   },
   delete: {
-    value: OPERATORS.DELETE,
+    value: OPTIONS.DELETE,
     src: new URL('./assets/delete.png', import.meta.url).href,
   },
   copy: {
-    value: OPERATORS.COPY,
+    value: OPTIONS.COPY,
     src: new URL('./assets/copy.png', import.meta.url).href,
   },
 };
@@ -75,18 +75,18 @@ export const KEY_MAPPINGS = {
   7: '7',
   8: '8',
   9: '9',
-  '+': OPERATORS.PLUS,
-  '-': OPERATORS.MINUS,
-  '*': OPERATORS.MULTIPLY,
-  '/': OPERATORS.DIVIDE,
-  Enter: OPERATORS.EQUALS,
-  '=': OPERATORS.EQUALS,
-  Backspace: OPERATORS.CLEAR,
-  Delete: OPERATORS.DELETE,
-  '.': OPERATORS.COMMA,
-  ',': OPERATORS.COMMA,
-  c: OPERATORS.COPY,
-  Escape: OPERATORS.DELETE,
+  '+': OPTIONS.PLUS,
+  '-': OPTIONS.MINUS,
+  '*': OPTIONS.MULTIPLY,
+  '/': OPTIONS.DIVIDE,
+  Enter: OPTIONS.EQUALS,
+  '=': OPTIONS.EQUALS,
+  Backspace: OPTIONS.CLEAR,
+  Delete: OPTIONS.DELETE,
+  '.': OPTIONS.COMMA,
+  ',': OPTIONS.COMMA,
+  c: OPTIONS.COPY,
+  Escape: OPTIONS.DELETE,
 };
 
 export const COPY_MSG = 'Copied to clipboard!';

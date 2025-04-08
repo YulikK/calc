@@ -2,7 +2,7 @@ import ControlPanel from '@/entities/control-panel/control-panel';
 import Display from '@/entities/display/display';
 import NumbersPanel from '@/entities/numbers-panel/numbers-panel';
 import OptionsPanel from '@/entities/options-panel/options-panel';
-import { BUTTON_TYPE, COPY_MSG, ERROR, KEY_MAPPINGS, OPERATORS, STATES } from '@/shared/constant';
+import { BUTTON_TYPE, COPY_MSG, ERROR, KEY_MAPPINGS, OPTIONS, STATES } from '@/shared/constant';
 import Component from '@/shared/ui/component/component';
 import Notification from '@/shared/ui/notification/notification';
 import { calculateExpression } from '@/shared/util/calculate-expression';
@@ -22,11 +22,11 @@ export default class Calculator extends Component {
   #expression = [];
   #state = STATES.READY;
   #operationHandlers = {
-    [OPERATORS.DELETE]: () => this.#deleteClick(),
-    [OPERATORS.CLEAR]: () => this.#clearClick(),
-    [OPERATORS.EQUALS]: () => this.#equalsClick(),
-    [OPERATORS.COMMA]: () => this.#commaClick(),
-    [OPERATORS.COPY]: () => this.#copyClick(),
+    [OPTIONS.DELETE]: () => this.#deleteClick(),
+    [OPTIONS.CLEAR]: () => this.#clearClick(),
+    [OPTIONS.EQUALS]: () => this.#equalsClick(),
+    [OPTIONS.COMMA]: () => this.#commaClick(),
+    [OPTIONS.COPY]: () => this.#copyClick(),
   };
 
   constructor() {
@@ -49,7 +49,7 @@ export default class Calculator extends Component {
 
     if (!isNaN(mappedValue)) {
       this.onNumberClick(mappedValue);
-    } else if (mappedValue === OPERATORS.COPY && (event.ctrlKey || event.metaKey)) {
+    } else if (mappedValue === OPTIONS.COPY && (event.ctrlKey || event.metaKey)) {
       this.#copyClick();
     } else {
       this.onOperationClick({ value: mappedValue });
@@ -76,7 +76,7 @@ export default class Calculator extends Component {
 
   onOperationClick = (operation) => {
     this.#displayRefresh(
-      operation.value === OPERATORS.COMMA ? BUTTON_TYPE.NUMBER : BUTTON_TYPE.OPERATION
+      operation.value === OPTIONS.COMMA ? BUTTON_TYPE.NUMBER : BUTTON_TYPE.OPERATION
     );
     const handler = this.#operationHandlers[operation.value];
     if (handler) {

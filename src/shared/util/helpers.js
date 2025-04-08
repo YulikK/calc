@@ -1,7 +1,7 @@
-import { BUTTON_TYPE, OPERATORS, STATES, START_VALUE } from '@/shared/constant';
+import { BUTTON_TYPE, OPTIONS, STATES, START_VALUE } from '@/shared/constant';
 
 function isOperator(value) {
-  return Object.values(OPERATORS).includes(value);
+  return Object.values(OPTIONS).includes(value);
 }
 
 export function updateExpressionArray(expression, value) {
@@ -18,18 +18,18 @@ export function updateExpressionArray(expression, value) {
       }
       return [...expression, value];
     }
-    if (lastItem === OPERATORS.MINUS && isPreviousItemOperator) {
+    if (lastItem === OPTIONS.MINUS && isPreviousItemOperator) {
       expression[expression.length - 1] += value;
       return [...expression];
     }
     return [...expression, value];
   }
 
-  if (value === OPERATORS.MINUS) {
+  if (value === OPTIONS.MINUS) {
     if (!isLastItemOperator) {
       return [...expression, value];
     }
-    if (lastItem === OPERATORS.MULTIPLY || lastItem === OPERATORS.DIVIDE) {
+    if (lastItem === OPTIONS.MULTIPLY || lastItem === OPTIONS.DIVIDE) {
       return [...expression, value];
     }
   }
@@ -49,25 +49,25 @@ export function updateExpressionWithComma(expression) {
   const lastItem = expression[expression.length - 1];
   const previousItem = expression[expression.length - 2];
 
-  if (lastItem === OPERATORS.MINUS && isOperator(previousItem)) {
+  if (lastItem === OPTIONS.MINUS && isOperator(previousItem)) {
     const newExpression = [...expression];
-    newExpression[newExpression.length - 1] = `-${START_VALUE}${OPERATORS.COMMA}`;
+    newExpression[newExpression.length - 1] = `-${START_VALUE}${OPTIONS.COMMA}`;
     return newExpression;
   }
 
   if (!lastItem || isOperator(lastItem)) {
-    return [...expression, `${START_VALUE}${OPERATORS.COMMA}`];
+    return [...expression, `${START_VALUE}${OPTIONS.COMMA}`];
   }
 
-  if (lastItem === OPERATORS.MINUS && isOperator(previousItem)) {
+  if (lastItem === OPTIONS.MINUS && isOperator(previousItem)) {
     const newExpression = [...expression];
-    newExpression[newExpression.length - 1] += `${START_VALUE}${OPERATORS.COMMA}`;
+    newExpression[newExpression.length - 1] += `${START_VALUE}${OPTIONS.COMMA}`;
     return newExpression;
   }
 
-  if (!lastItem.includes(OPERATORS.COMMA)) {
+  if (!lastItem.includes(OPTIONS.COMMA)) {
     const newExpression = [...expression];
-    newExpression[newExpression.length - 1] += OPERATORS.COMMA;
+    newExpression[newExpression.length - 1] += OPTIONS.COMMA;
     return newExpression;
   }
 
