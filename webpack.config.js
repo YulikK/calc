@@ -5,9 +5,8 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-//TODO: make production build
 export default {
-  mode: 'development',
+  mode: 'production',
   entry: './src/app/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),

@@ -12,6 +12,8 @@ export const OPTIONS = {
   PERCENT: '%',
 };
 
+export const MAX_SCORE_OPERATIONS = [OPTIONS.MULTIPLY, OPTIONS.DIVIDE, OPTIONS.PERCENT];
+
 export const START_VALUE = '0';
 
 export const ERROR = 'ERROR';
@@ -89,6 +91,7 @@ export const KEY_MAPPINGS = {
   '-': OPTIONS.MINUS,
   '*': OPTIONS.MULTIPLY,
   '/': OPTIONS.DIVIDE,
+  '%': OPTIONS.PERCENT,
   Enter: OPTIONS.EQUALS,
   '=': OPTIONS.EQUALS,
   Backspace: OPTIONS.CLEAR,

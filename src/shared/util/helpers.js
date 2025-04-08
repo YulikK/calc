@@ -4,71 +4,55 @@ function isOperator(value) {
   return Object.values(OPTIONS).includes(value);
 }
 
+function isNumber(value) {
+  const valueFormat = value.replace(OPTIONS.PERCENT, '');
+  return !isNaN(parseFloat(valueFormat)) && isFinite(valueFormat);
+}
+
+function replaceLastItem(expression, value) {
+  const newExpression = [...expression];
+  newExpression[newExpression.length - 1] = value;
+  return newExpression;
+}
+
+function addNewItem(expression, value) {
+  return [...expression, value];
+}
+
 export function updateExpressionArray(expression, value) {
   const lastItem = expression[expression.length - 1];
-  const previousItem = expression[expression.length - 2];
-  const isLastItemOperator = isOperator(lastItem);
-  const isPreviousItemOperator = isOperator(previousItem);
-
-  if (!isOperator(value)) {
-    if (!lastItem || !isLastItemOperator) {
-      if (lastItem && !isNaN(parseFloat(lastItem))) {
-        expression[expression.length - 1] += value;
-        return [...expression];
-      }
-      return [...expression, value];
-    }
-    if (lastItem === OPTIONS.MINUS && isPreviousItemOperator) {
-      expression[expression.length - 1] += value;
-      return [...expression];
-    }
-    return [...expression, value];
-  }
-
-  if (value === OPTIONS.MINUS) {
-    if (!isLastItemOperator) {
-      return [...expression, value];
-    }
-    if (lastItem === OPTIONS.MULTIPLY || lastItem === OPTIONS.DIVIDE) {
-      return [...expression, value];
-    }
-  }
-
-  if (isLastItemOperator) {
-    if (isPreviousItemOperator) {
-      expression.pop();
-    }
-    expression[expression.length - 1] = value;
+  if (!lastItem) {
     return [...expression];
   }
-
-  return [...expression, value];
+  if (lastItem.includes(OPTIONS.PERCENT)) {
+    return addNewItem(expression, value);
+  }
+  if (isOperator(lastItem)) {
+    return replaceLastItem(expression, value);
+  }
+  if (isNumber(lastItem)) {
+    return addNewItem(expression, value);
+  }
 }
 
 export function updateExpressionWithComma(expression) {
   const lastItem = expression[expression.length - 1];
   const previousItem = expression[expression.length - 2];
 
-  if (lastItem === OPTIONS.MINUS && isOperator(previousItem)) {
-    const newExpression = [...expression];
-    newExpression[newExpression.length - 1] = `-${START_VALUE}${OPTIONS.COMMA}`;
-    return newExpression;
-  }
-
   if (!lastItem || isOperator(lastItem)) {
-    return [...expression, `${START_VALUE}${OPTIONS.COMMA}`];
+    return addNewItem(expression, `${START_VALUE}${OPTIONS.COMMA}`);
+  }
+
+  if (lastItem && lastItem.includes(OPTIONS.PERCENT)) {
+    return [...expression];
   }
 
   if (lastItem === OPTIONS.MINUS && isOperator(previousItem)) {
-    const newExpression = [...expression];
-    newExpression[newExpression.length - 1] += `${START_VALUE}${OPTIONS.COMMA}`;
-    return newExpression;
+    return replaceLastItem(expression, `${OPTIONS.MINUS}${START_VALUE}${OPTIONS.COMMA}`);
   }
 
   if (!lastItem.includes(OPTIONS.COMMA)) {
-    const newExpression = [...expression];
-    newExpression[newExpression.length - 1] += OPTIONS.COMMA;
-    return newExpression;
+    return replaceLastItem(expression, lastItem + OPTIONS.COMMA);
   }
 
   return expression;
@@ -96,10 +80,68 @@ export function clearLastValue(expression) {
 
   const lastItem = expression[expression.length - 1];
   if (lastItem.length > 1) {
-    const newExpression = [...expression];
-    newExpression[newExpression.length - 1] = lastItem.slice(0, -1);
-    return newExpression;
+    const newValue = lastItem.slice(0, -1);
+    if (newValue === OPTIONS.MINUS) {
+      return expression.slice(0, -1);
+    } else {
+      return replaceLastItem(expression, newValue);
+    }
   }
 
   return expression.slice(0, -1);
+}
+
+export function updateExpressionWithSign(expression) {
+  const lastItem = expression[expression.length - 1];
+  if (!lastItem || isOperator(lastItem)) {
+    return [...expression];
+  }
+
+  if (isNumber(lastItem)) {
+    if (lastItem.includes(OPTIONS.PERCENT)) {
+      const number = parseFloat(lastItem.replace(OPTIONS.PERCENT, ''));
+      return replaceLastItem(expression, String(-number) + OPTIONS.PERCENT);
+    }
+    return replaceLastItem(expression, String(Number(lastItem) * -1));
+  }
+}
+
+export function updateExpressionWithMinus(expression) {
+  const lastItem = expression[expression.length - 1];
+  if (isOperator(lastItem)) {
+    return replaceLastItem(expression, OPTIONS.MINUS);
+  }
+  if (isNumber(lastItem)) {
+    return addNewItem(expression, OPTIONS.MINUS);
+  }
+}
+
+export function updateExpressionWithNumber(expression, value) {
+  const lastItem = expression[expression.length - 1];
+  if (!lastItem) {
+    return addNewItem(expression, value);
+  }
+  if (lastItem.includes(OPTIONS.PERCENT)) {
+    return [...expression];
+  }
+  if (isOperator(lastItem)) {
+    return addNewItem(expression, value);
+  }
+  if (isNumber(lastItem)) {
+    return replaceLastItem(expression, lastItem + value);
+  }
+}
+
+export function updateExpressionWithPercent(expression) {
+  const lastItem = expression[expression.length - 1];
+  if (!lastItem || isOperator(lastItem)) {
+    return [...expression];
+  }
+  if (isNumber(lastItem)) {
+    return replaceLastItem(expression, lastItem + OPTIONS.PERCENT);
+  }
+  if (lastItem.includes(OPTIONS.PERCENT)) {
+    return replaceLastItem(expression, lastItem.replace(OPTIONS.PERCENT, ''));
+  }
+  return expression;
 }

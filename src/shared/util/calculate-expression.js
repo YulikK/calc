@@ -1,56 +1,77 @@
-import { ERROR } from '@/shared/constant';
+import { ERROR, MAX_SCORE_OPERATIONS, OPTIONS } from '@/shared/constant';
+
+function formatNumber(value) {
+  return Number(value.toFixed(10));
+}
 
 export function calculateExpression(expression) {
+  console.log(expression);
   if (!expression.length) return 0;
 
   const numbers = [];
-  const OPTIONS = [];
+  const options = [];
 
   let currentNumber = '';
+  const lastItem = expression[expression.length - 1];
 
-  if (isNaN(expression[expression.length - 1])) {
+  if (isNaN(parseFloat(lastItem.replace(OPTIONS.PERCENT, '')))) {
     expression.pop();
   }
+
   expression.forEach((item) => {
-    if (!isNaN(item)) {
+    if (typeof item === 'string' && item.includes(OPTIONS.PERCENT)) {
+      const number = parseFloat(item.replace(OPTIONS.PERCENT, ''));
+      numbers.push(number / 100);
+    } else if (!isNaN(parseFloat(item))) {
       currentNumber += item;
-    } else {
-      if (currentNumber) {
-        numbers.push(parseFloat(currentNumber));
-        currentNumber = '';
-      }
-      OPTIONS.push(item);
+    } else if (currentNumber) {
+      numbers.push(parseFloat(currentNumber));
+      currentNumber = '';
+    }
+
+    if (isNaN(parseFloat(item)) && !item.includes(OPTIONS.PERCENT) && item !== OPTIONS.PERCENT) {
+      options.push(item);
     }
   });
+
   if (currentNumber) {
     numbers.push(parseFloat(currentNumber));
   }
+  console.log(numbers);
+  console.log(options);
 
-  for (let i = 0; i < OPTIONS.length; i++) {
-    if (OPTIONS[i] === '*' || OPTIONS[i] === '/') {
-      const result =
-        OPTIONS[i] === '*'
-          ? Number((numbers[i] * numbers[i + 1]).toFixed(10))
-          : numbers[i + 1] !== 0
-            ? Number((numbers[i] / numbers[i + 1]).toFixed(10))
-            : ERROR;
+  for (let i = 0; i < options.length; i++) {
+    if (MAX_SCORE_OPERATIONS.includes(options[i])) {
+      let result;
+      switch (options[i]) {
+        case OPTIONS.PERCENT:
+          result = formatNumber(numbers[i] / 100);
+          break;
 
-      if (result === ERROR || Number.isNaN(result)) {
+        case OPTIONS.MULTIPLY:
+          result = formatNumber(numbers[i] * numbers[i + 1]);
+          break;
+
+        case OPTIONS.DIVIDE:
+          result = formatNumber(numbers[i] / numbers[i + 1]);
+          break;
+      }
+      if (Number.isNaN(result) || !Number.isFinite(result)) {
         throw new Error(ERROR);
       }
 
       numbers.splice(i, 2, result);
-      OPTIONS.splice(i, 1);
+      options.splice(i, 1);
       i--;
     }
   }
 
   let result = numbers[0];
-  for (let i = 0; i < OPTIONS.length; i++) {
-    if (OPTIONS[i] === '+') {
-      result = Number((result + numbers[i + 1]).toFixed(10));
-    } else if (OPTIONS[i] === '-') {
-      result = Number((result - numbers[i + 1]).toFixed(10));
+  for (let i = 0; i < options.length; i++) {
+    if (options[i] === '+') {
+      result = formatNumber(result + numbers[i + 1]);
+    } else if (options[i] === '-') {
+      result = formatNumber(result - numbers[i + 1]);
     }
   }
 

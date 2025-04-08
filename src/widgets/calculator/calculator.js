@@ -10,6 +10,9 @@ import {
   getCalcState,
   updateExpressionArray,
   updateExpressionWithComma,
+  updateExpressionWithNumber,
+  updateExpressionWithPercent,
+  updateExpressionWithSign,
 } from '@/shared/util/helpers';
 
 import style from './calculator.module.scss';
@@ -24,6 +27,8 @@ export default class Calculator extends Component {
     [OPTIONS.EQUALS]: () => this.#equalsClick(),
     [OPTIONS.COMMA]: () => this.#commaClick(),
     [OPTIONS.COPY]: () => this.#copyClick(),
+    [OPTIONS.SIGN]: () => this.#signClick(),
+    [OPTIONS.PERCENT]: () => this.#percentClick(),
   };
 
   constructor() {
@@ -68,11 +73,12 @@ export default class Calculator extends Component {
 
   onNumberClick = (number) => {
     this.#displayRefresh(BUTTON_TYPE.NUMBER);
-    this.#updateExpression(number);
+    this.#expression = updateExpressionWithNumber(this.#expression, number);
+    console.log(this.#expression);
+    this.#displayUpdate();
   };
 
   onOperationClick = (operation) => {
-    console.log(operation);
     this.#displayRefresh(
       operation.value === OPTIONS.COMMA ? BUTTON_TYPE.NUMBER : BUTTON_TYPE.OPERATION
     );
@@ -86,6 +92,7 @@ export default class Calculator extends Component {
 
   #updateExpression(value) {
     this.#expression = updateExpressionArray(this.#expression, value);
+    console.log(this.#expression);
     this.#displayUpdate();
   }
 
@@ -123,6 +130,16 @@ export default class Calculator extends Component {
 
   #commaClick() {
     this.#expression = updateExpressionWithComma(this.#expression);
+    this.#displayUpdate();
+  }
+
+  #signClick() {
+    this.#expression = updateExpressionWithSign(this.#expression);
+    this.#displayUpdate();
+  }
+
+  #percentClick() {
+    this.#expression = updateExpressionWithPercent(this.#expression);
     this.#displayUpdate();
   }
 
