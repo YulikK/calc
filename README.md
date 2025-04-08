@@ -4,6 +4,10 @@
 
 [Task requirements](https://docs.google.com/document/d/1zpXXeSae-BlcxPKgw3DhxZA92cspVailrPYoaXSYrW8/edit#heading=h.5dt3hghpa22f)
 
+## Demo
+
+Check out the live demo: [Calculator](https://yulikk.github.io/calc/)
+
 ## Features
 
 - Basic arithmetic operations: addition, subtraction, multiplication, division
