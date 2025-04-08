@@ -1,10 +1,10 @@
 import ControlPanel from '@/entities/control-panel/control-panel';
 import Display from '@/entities/display/display';
+import Notification from '@/entities/notification/notification';
 import NumbersPanel from '@/entities/numbers-panel/numbers-panel';
 import OptionsPanel from '@/entities/options-panel/options-panel';
 import { BUTTON_TYPE, COPY_MSG, ERROR, KEY_MAPPINGS, OPTIONS, STATES } from '@/shared/constant';
 import Component from '@/shared/ui/component/component';
-import Notification from '@/shared/ui/notification/notification';
 import { calculateExpression } from '@/shared/util/calculate-expression';
 import {
   clearLastValue,

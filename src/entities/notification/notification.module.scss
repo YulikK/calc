@@ -1,0 +1,45 @@
+@use '@/shared/styles/variables' as *;
+
+.container {
+  position: fixed;
+  z-index: 1000;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  padding: 10px 20px;
+  border-left: 5px solid var(--color-option);
+  border-radius: $border-radius 4px;
+
+  background-color: $color-white;
+
+  animation: fade-in 0.3s ease-in-out;
+
+  &.hide {
+    animation: fade-out 0.3s ease-in-out forwards;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    transform: translate(-50%, 20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translate(-50%, 20px);
+    opacity: 0;
+  }
+}
