@@ -8,6 +8,8 @@ export const OPTIONS = {
   DELETE: 'DELETE',
   COMMA: '.',
   COPY: 'COPY',
+  SIGN: 'SIGN',
+  PERCENT: '%',
 };
 
 export const START_VALUE = '0';
@@ -61,6 +63,14 @@ export const OPTION_BUTTONS = {
   copy: {
     value: OPTIONS.COPY,
     src: new URL('./assets/copy.png', import.meta.url).href,
+  },
+  sign: {
+    value: OPTIONS.SIGN,
+    src: new URL('./assets/sign.png', import.meta.url).href,
+  },
+  percent: {
+    value: OPTIONS.PERCENT,
+    src: new URL('./assets/percent.png', import.meta.url).href,
   },
 };
 
