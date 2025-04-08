@@ -1,10 +1,15 @@
-import { OPERATIONS } from '@/shared/constant';
+import { OPTION_BUTTONS } from '@/shared/constant';
 import ButtonOperation from '@/shared/ui/button-operation/button-operation';
 import Component from '@/shared/ui/component/component';
 
 import styles from './options-panel.module.scss';
 
-const options = [OPERATIONS.divide, OPERATIONS.multiply, OPERATIONS.minus, OPERATIONS.plus];
+const options = [
+  OPTION_BUTTONS.divide,
+  OPTION_BUTTONS.multiply,
+  OPTION_BUTTONS.minus,
+  OPTION_BUTTONS.plus,
+];
 
 export default class OptionsPanel extends Component {
   #onClick;

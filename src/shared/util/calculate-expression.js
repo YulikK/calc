@@ -1,11 +1,10 @@
 import { ERROR } from '@/shared/constant';
 
 export function calculateExpression(expression) {
-  console.log(expression);
   if (!expression.length) return 0;
 
   const numbers = [];
-  const operators = [];
+  const OPTIONS = [];
 
   let currentNumber = '';
 
@@ -20,17 +19,17 @@ export function calculateExpression(expression) {
         numbers.push(parseFloat(currentNumber));
         currentNumber = '';
       }
-      operators.push(item);
+      OPTIONS.push(item);
     }
   });
   if (currentNumber) {
     numbers.push(parseFloat(currentNumber));
   }
 
-  for (let i = 0; i < operators.length; i++) {
-    if (operators[i] === '*' || operators[i] === '/') {
+  for (let i = 0; i < OPTIONS.length; i++) {
+    if (OPTIONS[i] === '*' || OPTIONS[i] === '/') {
       const result =
-        operators[i] === '*'
+        OPTIONS[i] === '*'
           ? Number((numbers[i] * numbers[i + 1]).toFixed(10))
           : numbers[i + 1] !== 0
             ? Number((numbers[i] / numbers[i + 1]).toFixed(10))
@@ -41,16 +40,16 @@ export function calculateExpression(expression) {
       }
 
       numbers.splice(i, 2, result);
-      operators.splice(i, 1);
+      OPTIONS.splice(i, 1);
       i--;
     }
   }
 
   let result = numbers[0];
-  for (let i = 0; i < operators.length; i++) {
-    if (operators[i] === '+') {
+  for (let i = 0; i < OPTIONS.length; i++) {
+    if (OPTIONS[i] === '+') {
       result = Number((result + numbers[i + 1]).toFixed(10));
-    } else if (operators[i] === '-') {
+    } else if (OPTIONS[i] === '-') {
       result = Number((result - numbers[i + 1]).toFixed(10));
     }
   }

@@ -1,10 +1,10 @@
 @use '@/shared/styles/variables' as *;
 
 .operation {
-  background-color: $color-option-light;
+  background-color: var(--color-option);
 
   &:hover {
-    background-color: $color-option-light-hover;
+    background-color: var(--color-option-hover);
   }
 }
 

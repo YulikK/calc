@@ -1,17 +1,41 @@
 $font-stack: 'Josefin Sans', sans-serif;
-$font-color: #54351f;
 $font-size: 16px;
 $font-weight: 400;
 $font-weight-bold: 700;
-$color-bg-light: linear-gradient(180deg, #839371 0%, #505a44 100%) fixed;
-$color-btn-light: #f6ebd5;
-$color-btn-light-hover: #fcf9f2;
-$color-btn-light-border: #c0c8a2;
-$color-option-light: #b5bf92;
-$color-option-light-hover: #d5dfaf;
 $border-radius: 12px;
 $gap-size: 10px;
 $icon-size: 30px;
 $button-size: 40px;
 $box-shadow: rgb(0 0 0 / 40%) 0px 4px 12px 0px;
 $box-shadow-hover: rgb(0 0 0 / 40%) 0px 2px 10px 0px;
+$color-white: #fff;
+
+body.forest {
+  --font-color: #54351f;
+  --color-bg: linear-gradient(180deg, #839371 0%, #505a44 100%) fixed;
+  --color-btn: #f6ebd5;
+  --color-btn-hover: #fcf9f2;
+  --color-btn-border: #c0c8a2;
+  --color-option: #b5bf92;
+  --color-option-hover: #d5dfaf;
+}
+
+body.water {
+  --font-color: #1a3c4d;
+  --color-bg: linear-gradient(180deg, #68a7c4 0%, #2d5a6e 100%) fixed;
+  --color-btn: #e8f4f8;
+  --color-btn-hover: #f5fbfd;
+  --color-btn-border: #9ac2d4;
+  --color-option: #7fb8d4;
+  --color-option-hover: #a8d1e4;
+}
+
+body.fire {
+  --font-color: #4d1a1a;
+  --color-bg: linear-gradient(180deg, #c46868 0%, #6e2d2d 100%) fixed;
+  --color-btn: #f8e8e8;
+  --color-btn-hover: #fdf5f5;
+  --color-btn-border: #d49a9a;
+  --color-option: #d47f7f;
+  --color-option-hover: #e4a8a8;
+}
