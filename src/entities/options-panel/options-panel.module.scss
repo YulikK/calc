@@ -1,0 +1,38 @@
+@use '@/shared/styles/variables' as *;
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: $gap-size;
+}
+
+.op {
+  &_right_column {
+    grid-column: 4;
+  }
+
+  &_top_row {
+    grid-row: 1;
+  }
+
+  &_bottom-right {
+    grid-area: 3 / 3;
+  }
+
+  &_comma {
+    grid-area: 5 / 3;
+  }
+
+  &_theme {
+    grid-area: 5 / 1;
+  }
+}
+
+.numbers {
+  grid-area: 2 / 1 / 5 / 4;
+}
+
+.zero {
+  grid-area: 5 / 2;
+}
