@@ -1,8 +1,0 @@
-@use '@/shared/styles/variables.scss' as *;
-
-@mixin font-style {
-  font-family: $font-stack;
-  font-size: $font-size;
-  font-weight: $font-weight;
-  color: var(--font-color);
-}
