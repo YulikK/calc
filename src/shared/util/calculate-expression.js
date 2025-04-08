@@ -1,7 +1,6 @@
 import { ERROR } from '@/shared/constant';
 
 export function calculateExpression(expression) {
-  console.log(expression);
   if (!expression.length) return 0;
 
   const numbers = [];

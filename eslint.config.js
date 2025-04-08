@@ -31,6 +31,7 @@ export default [
     rules: {
       'no-undef': 'error',
       'no-unused-vars': 'error',
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
       'import/order': [
         'error',
         {
